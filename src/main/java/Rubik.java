@@ -1,11 +1,10 @@
-package org.example;
-
 import java.util.Arrays;
+import java.util.Random;
 
 public final class Rubik {
-    final class Face {
+    private final class Face {
         private final int size;
-        private char[][] cells;
+        private final char[][] cells;
 
         public Face(char color, int size) {
             this.size = size;
@@ -26,20 +25,22 @@ public final class Rubik {
         }
 
         // Rotates face by 90 degrees clockwise
-        public void rotate() {
-            Face tempFace = new Face('x', size);
+        private void rotate() {
+            char[][] tempCells = new char[size][size];
+            for (int i = 0; i < size; i++)
+                Arrays.fill(tempCells[i], 'x');
             for (int i = 0; i < size; i++)
                 for (int j = 0; j < size; j++)
-                    tempFace.cells[i][j] = this.cells[j][i];
+                    tempCells[i][j] = this.cells[j][i];
             for (int i = 0; i < size; i++)
                 for (int j = 0; j < size; j++)
-                    this.cells[i][j] = tempFace.cells[i][size - 1 - j];
+                    this.cells[i][j] = tempCells[i][size - 1 - j];
         }
     }
 
 
     private final int size;
-    private Face up, down, left, right, front, behind;
+    private final Face up, down, left, right, front, behind;
 
     public Rubik(int size) {
         if (size < 2) throw new IllegalArgumentException("Rubic must be at least 2x2x2!");
@@ -53,25 +54,20 @@ public final class Rubik {
         behind = new Face('b', size);
     }
 
-    public void printFace(char side) {
-        if (side != 'u' && side != 'd' && side != 'l' && side != 'r' && side != 'f' && side != 'b')
-            throw new IllegalArgumentException("Face must be u, d, l, r, f or b!");
-        System.out.println(getFace(side).toString());
-    }
 
-    private Face getFace(char side) {
+    public String getFace(char side) {
         return switch (side) {
-            case 'u' -> up;
-            case 'd' -> down;
-            case 'l' -> left;
-            case 'r' -> right;
-            case 'f' -> front;
-            case 'b' -> behind;
+            case 'u' -> up.toString();
+            case 'd' -> down.toString();
+            case 'l' -> left.toString();
+            case 'r' -> right.toString();
+            case 'f' -> front.toString();
+            case 'b' -> behind.toString();
             default -> throw new IllegalArgumentException("Face must be u, d, l, r, f or b!");
         };
     }
 
-    // Rotates Up by 90 degrees (clockwise)
+    // Rotates upper face by 90 degrees (clockwise)
     public void u(int layers) {
         if (layers > size) throw new IllegalArgumentException("Too many layers!");
         up.rotate();
@@ -82,6 +78,8 @@ public final class Rubik {
             front.cells[i] = right.cells[i];
             right.cells[i] = tempLayer;
         }
+        if (layers == size) for (int i = 0; i < 3; i++)
+            down.rotate();
     }
 
     public void u() {
@@ -98,6 +96,8 @@ public final class Rubik {
             front.cells[i] = left.cells[i];
             left.cells[i] = tempLayer;
         }
+        if (layers == size) for (int i = 0; i < 3; i++)
+            up.rotate();
     }
 
     public void d() {
@@ -116,9 +116,11 @@ public final class Rubik {
                 right.cells[j][i] = tempLayer[j];
             }
         }
+        if (layers == size) for (int i = 0; i < 3; i++)
+            behind.rotate();
     }
 
-    public void f(){
+    public void f() {
         f(1);
     }
 
@@ -134,9 +136,11 @@ public final class Rubik {
                 left.cells[j][i] = tempLayer[j];
             }
         }
+        if (layers == size) for (int i = 0; i < 3; i++)
+            front.rotate();
     }
 
-    public void b(){
+    public void b() {
         b(1);
     }
 
@@ -153,6 +157,8 @@ public final class Rubik {
                 behind.cells[j][i] = tempLayer[j];
             }
         }
+        if (layers == size) for (int i = 0; i < 3; i++)
+            left.rotate();
     }
 
     public void r() {
@@ -172,29 +178,109 @@ public final class Rubik {
                 front.cells[j][i] = tempLayer[j];
             }
         }
+        if (layers == size) for (int i = 0; i < 3; i++)
+            right.rotate();
     }
 
     public void l() {
         l(1);
     }
 
-    // Turns the whole cube up by 90 degrees
     public void turnUp() {
-
+        r(size);
     }
 
-    // Turns the whole cube down by 90 degrees
     public void turnDown() {
-
+        l(size);
     }
 
-    // Turns the whole cube left by 90 degrees
     public void turnLeft() {
-
+        u(size);
     }
 
-    // Turns the whole cube right by 90 degrees
     public void turnRight() {
+        d(size);
+    }
 
+    public void randomize() {
+        Random rand = new Random();
+        int rotates = rand.nextInt(10, 100);
+        for (int i = 0; i < rotates; i++) {
+            int layers = rand.nextInt(1, size + 1);
+            switch (rand.nextInt(0, 6)) {
+                case 0 -> u(layers);
+                case 1 -> d(layers);
+                case 2 -> l(layers);
+                case 3 -> r(layers);
+                case 4 -> f(layers);
+                case 5 -> b(layers);
+                default -> throw new IllegalStateException(); // IDEA says it's necessary :/
+            }
+            ;
+        }
+    }
+
+    private boolean isSolved() {
+        for (int i = 0; i < size; i++)
+            for (int j = 0; j < size; j++)
+                if (
+                        up.cells[i][j] != up.cells[0][0] || down.cells[i][j] != down.cells[0][0] ||
+                        left.cells[i][j] != left.cells[0][0] || right.cells[i][j] != right.cells[0][0] ||
+                        front.cells[i][j] != front.cells[0][0]
+                )
+                    return false;
+        return true;
+    }
+
+    // I don't know how to solve it :(
+    public void solve() {
+        if (size != 2) throw new IllegalArgumentException("You can use solve() only for 2x2x2");
+        while (true) {
+            f();
+            r();
+            u();
+            for (int i = 0; i < 3; i++) {
+                r();
+            }
+            for (int i = 0; i < 3; i++) {
+                u();
+            }
+            for (int i = 0; i < 3; i++) {
+                f();
+            }
+            if (isSolved()) return;
+        }
+    }
+
+    // Просто полезный метод. Выводит весь кубик.
+    public void print() {
+        // up
+        for (int i = 0; i < size; i++) {
+            System.out.print(" ".repeat(size));
+            for (int j = 0; j < size; j++) {
+                System.out.print(up.cells[i][j]);
+            }
+            System.out.println();
+        }
+        // left, front, right, behind
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++)
+                System.out.print(left.cells[i][j]);
+            for (int j = 0; j < size; j++)
+                System.out.print(front.cells[i][j]);
+            for (int j = 0; j < size; j++)
+                System.out.print(right.cells[i][j]);
+            for (int j = 0; j < size; j++)
+                System.out.print(behind.cells[i][j]);
+            System.out.println();
+        }
+        // down
+        for (int i = 0; i < size; i++) {
+            System.out.print(" ".repeat(size));
+            for (int j = 0; j < size; j++) {
+                System.out.print(down.cells[i][j]);
+            }
+            System.out.println();
+        }
     }
 }
