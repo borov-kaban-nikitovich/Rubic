@@ -4,13 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6ca42c7e-affd-4d87-b73e-02428bf3e7bc" name="Changes" comment="Можно проворачивать произвольное количество слоёв по часовой стрелке">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Side.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+    <list default="true" id="6ca42c7e-affd-4d87-b73e-02428bf3e7bc" name="Changes" comment="Исправил недочёты:&#10;1. Добавил enum для названий сторон (UP, DOWN и другие)&#10;2. Заменил названия функций для поворотов (u —&gt; rotateUp и по аналогии)&#10;3. Вместо print() переписал toString()">
       <change beforePath="$PROJECT_DIR$/src/main/java/Rubik.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Rubik.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/RubikTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/RubikTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -169,7 +164,14 @@
       <option name="project" value="LOCAL" />
       <updated>1677173804368</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Исправил недочёты:&#10;1. Добавил enum для названий сторон (UP, DOWN и другие)&#10;2. Заменил названия функций для поворотов (u —&gt; rotateUp и по аналогии)&#10;3. Вместо print() переписал toString()">
+      <created>1678027950541</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1678027950541</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -186,6 +188,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Хранит состояние, поддерживает запрос грани, произвольный размер грани." />
     <MESSAGE value="Можно проворачивать произвольное количество слоёв по часовой стрелке" />
-    <option name="LAST_COMMIT_MESSAGE" value="Можно проворачивать произвольное количество слоёв по часовой стрелке" />
+    <MESSAGE value="Исправил недочёты:&#10;1. Добавил enum для названий сторон (UP, DOWN и другие)&#10;2. Заменил названия функций для поворотов (u —&gt; rotateUp и по аналогии)&#10;3. Вместо print() переписал toString()" />
+    <option name="LAST_COMMIT_MESSAGE" value="Исправил недочёты:&#10;1. Добавил enum для названий сторон (UP, DOWN и другие)&#10;2. Заменил названия функций для поворотов (u —&gt; rotateUp и по аналогии)&#10;3. Вместо print() переписал toString()" />
   </component>
 </project>

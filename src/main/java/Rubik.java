@@ -63,7 +63,6 @@ public final class Rubik {
             case RIGHT -> right.toString();
             case FRONT -> front.toString();
             case BEHIND -> behind.toString();
-            default -> throw new IllegalArgumentException("Face must be u, d, l, r, f or b!");
         };
     }
 
@@ -216,7 +215,6 @@ public final class Rubik {
                 case 5 -> rotateBehind(layers);
                 default -> throw new IllegalStateException(); // IDEA says it's necessary :/
             }
-            ;
         }
     }
 
