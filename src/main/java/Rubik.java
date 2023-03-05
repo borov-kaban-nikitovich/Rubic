@@ -55,20 +55,20 @@ public final class Rubik {
     }
 
 
-    public String getFace(char side) {
+    public String getFace(Side side) {
         return switch (side) {
-            case 'u' -> up.toString();
-            case 'd' -> down.toString();
-            case 'l' -> left.toString();
-            case 'r' -> right.toString();
-            case 'f' -> front.toString();
-            case 'b' -> behind.toString();
+            case UP -> up.toString();
+            case DOWN -> down.toString();
+            case LEFT -> left.toString();
+            case RIGHT -> right.toString();
+            case FRONT -> front.toString();
+            case BEHIND -> behind.toString();
             default -> throw new IllegalArgumentException("Face must be u, d, l, r, f or b!");
         };
     }
 
     // Rotates upper face by 90 degrees (clockwise)
-    public void u(int layers) {
+    public void rotateUp(int layers) {
         if (layers > size) throw new IllegalArgumentException("Too many layers!");
         up.rotate();
         for (int i = 0; i < layers; i++) {
@@ -82,11 +82,11 @@ public final class Rubik {
             down.rotate();
     }
 
-    public void u() {
-        u(1);
+    public void rotateUp() {
+        rotateUp(1);
     }
 
-    public void d(int layers) {
+    public void rotateDown(int layers) {
         if (layers > size) throw new IllegalArgumentException("Too many layers!");
         down.rotate();
         for (int i = size - 1; i > size - 1 - layers; i--) {
@@ -100,11 +100,11 @@ public final class Rubik {
             up.rotate();
     }
 
-    public void d() {
-        d(1);
+    public void rotateDown() {
+        rotateDown(1);
     }
 
-    public void f(int layers) {
+    public void rotateFront(int layers) {
         if (layers > size) throw new IllegalArgumentException("Too many layers!");
         front.rotate();
         for (int i = 0; i < layers; i++) {
@@ -120,11 +120,11 @@ public final class Rubik {
             behind.rotate();
     }
 
-    public void f() {
-        f(1);
+    public void rotateFront() {
+        rotateFront(1);
     }
 
-    public void b(int layers) {
+    public void rotateBehind(int layers) {
         if (layers > size) throw new IllegalArgumentException("Too many layers!");
         behind.rotate();
         for (int i = 0; i < layers; i++) {
@@ -140,11 +140,11 @@ public final class Rubik {
             front.rotate();
     }
 
-    public void b() {
-        b(1);
+    public void rotateBehind() {
+        rotateBehind(1);
     }
 
-    public void r(int layers) {
+    public void rotateRight(int layers) {
         if (layers > size) throw new IllegalArgumentException("Too many layers!");
         right.rotate();
         for (int i = 0; i < layers; i++) {
@@ -161,11 +161,11 @@ public final class Rubik {
             left.rotate();
     }
 
-    public void r() {
-        r(1);
+    public void rotateRight() {
+        rotateRight(1);
     }
 
-    public void l(int layers) {
+    public void rotateLeft(int layers) {
         if (layers > size) throw new IllegalArgumentException("Too many layers!");
         left.rotate();
         for (int i = 0; i < layers; i++) {
@@ -182,24 +182,24 @@ public final class Rubik {
             right.rotate();
     }
 
-    public void l() {
-        l(1);
+    public void rotateLeft() {
+        rotateLeft(1);
     }
 
     public void turnUp() {
-        r(size);
+        rotateRight(size);
     }
 
     public void turnDown() {
-        l(size);
+        rotateLeft(size);
     }
 
     public void turnLeft() {
-        u(size);
+        rotateUp(size);
     }
 
     public void turnRight() {
-        d(size);
+        rotateDown(size);
     }
 
     public void randomize() {
@@ -208,79 +208,81 @@ public final class Rubik {
         for (int i = 0; i < rotates; i++) {
             int layers = rand.nextInt(1, size + 1);
             switch (rand.nextInt(0, 6)) {
-                case 0 -> u(layers);
-                case 1 -> d(layers);
-                case 2 -> l(layers);
-                case 3 -> r(layers);
-                case 4 -> f(layers);
-                case 5 -> b(layers);
+                case 0 -> rotateUp(layers);
+                case 1 -> rotateDown(layers);
+                case 2 -> rotateLeft(layers);
+                case 3 -> rotateRight(layers);
+                case 4 -> rotateFront(layers);
+                case 5 -> rotateBehind(layers);
                 default -> throw new IllegalStateException(); // IDEA says it's necessary :/
             }
             ;
         }
     }
 
-    private boolean isSolved() {
-        for (int i = 0; i < size; i++)
-            for (int j = 0; j < size; j++)
-                if (
-                        up.cells[i][j] != up.cells[0][0] || down.cells[i][j] != down.cells[0][0] ||
-                        left.cells[i][j] != left.cells[0][0] || right.cells[i][j] != right.cells[0][0] ||
-                        front.cells[i][j] != front.cells[0][0]
-                )
-                    return false;
-        return true;
-    }
+//    private boolean isSolved() {
+//        for (int i = 0; i < size; i++)
+//            for (int j = 0; j < size; j++)
+//                if (
+//                        up.cells[i][j] != up.cells[0][0] || down.cells[i][j] != down.cells[0][0] ||
+//                        left.cells[i][j] != left.cells[0][0] || right.cells[i][j] != right.cells[0][0] ||
+//                        front.cells[i][j] != front.cells[0][0]
+//                )
+//                    return false;
+//        return true;
+//    }
 
-    // I don't know how to solve it :(
-    public void solve() {
-        if (size != 2) throw new IllegalArgumentException("You can use solve() only for 2x2x2");
-        while (true) {
-            f();
-            r();
-            u();
-            for (int i = 0; i < 3; i++) {
-                r();
-            }
-            for (int i = 0; i < 3; i++) {
-                u();
-            }
-            for (int i = 0; i < 3; i++) {
-                f();
-            }
-            if (isSolved()) return;
-        }
-    }
+//    // I don't know how to solve it :(
+//    public void solve() {
+//        if (size != 2) throw new IllegalArgumentException("You can use solve() only for 2x2x2");
+//        while (true) {
+//            f();
+//            r();
+//            u();
+//            for (int i = 0; i < 3; i++) {
+//                r();
+//            }
+//            for (int i = 0; i < 3; i++) {
+//                u();
+//            }
+//            for (int i = 0; i < 3; i++) {
+//                f();
+//            }
+//            if (isSolved()) return;
+//        }
+//    }
 
-    // Просто полезный метод. Выводит весь кубик.
-    public void print() {
+    @Override
+    public String toString() {
+        StringBuilder out = new StringBuilder();
         // up
         for (int i = 0; i < size; i++) {
-            System.out.print(" ".repeat(size));
+            out.append(" ".repeat(size));
             for (int j = 0; j < size; j++) {
-                System.out.print(up.cells[i][j]);
+                out.append(up.cells[i][j]);
             }
-            System.out.println();
+            out.append('\n');
         }
         // left, front, right, behind
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++)
-                System.out.print(left.cells[i][j]);
+                out.append(left.cells[i][j]);
             for (int j = 0; j < size; j++)
-                System.out.print(front.cells[i][j]);
+                out.append(front.cells[i][j]);
             for (int j = 0; j < size; j++)
-                System.out.print(right.cells[i][j]);
+                out.append(right.cells[i][j]);
             for (int j = 0; j < size; j++)
-                System.out.print(behind.cells[i][j]);
-            System.out.println();
+                out.append(behind.cells[i][j]);
+            out.append('\n');
         }
         // down
         for (int i = 0; i < size; i++) {
-            System.out.print(" ".repeat(size));
+            out.append(" ".repeat(size));
             for (int j = 0; j < size; j++) {
-                System.out.print(down.cells[i][j]);
+                out.append(down.cells[i][j]);
             }
-            System.out.println();
+            out.append('\n');
         }
+        return out.toString();
     }
 }
